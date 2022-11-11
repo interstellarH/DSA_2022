@@ -1,0 +1,39 @@
+#include<iostream>
+using namespace std;
+int inseq[70000];
+int postseq[70000];
+int num;
+//BuildTree参数一开始用的在后序中的位置索引，后来发现这样不方便确定左右子树长度 
+void BuildTree(int instart, int inend, int root)//这个root其实也是后根遍历中的最后一位 
+{
+	cout<<postseq[root]<<' ';
+	if(inend==instart) return;//这个终止条件很重要 
+	int pos=0;//root在中序中的位置 
+	for(int i=0;i<num;i++){
+		if(inseq[i]==postseq[root]) {
+			pos=i; break;
+		}
+	}
+	int num_left=pos-instart;
+	int num_right=inend-pos;
+	if(num_left)
+		BuildTree(instart,pos-1,root-num_right-1);
+	if(num_right)
+		BuildTree(pos+1,inend,root-1);
+	return;
+}
+
+int main()
+{
+	int t=0;
+	while(cin>>inseq[t++]) {
+		if(cin.get()!=' ') break;//正常情况下输入一个数之后光标移动到‘ ’前 
+	}
+	num=t;//树中节点的个数 
+	t=0;
+	while(cin>>postseq[t++]) {
+		if(cin.get()!=' ') break;
+	}
+	BuildTree(0,num-1,num-1);
+	return 0;
+}
