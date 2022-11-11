@@ -1,0 +1,63 @@
+#include<iostream>
+using namespace std;
+struct node
+{
+	char c; 
+	node * lp;
+	node * rp;
+	node (char _c):c(_c),lp(NULL),rp(NULL){}
+};
+
+void postorder(node* root)
+{
+	if(root!=NULL){
+		postorder(root->lp);
+		postorder(root->rp);
+		printf("%c",root->c);
+	}
+}
+
+void inorder(node* root)
+{
+	if(root!=NULL){
+		inorder(root->lp);
+		printf("%c",root->c);
+		inorder(root->rp);
+	}
+}
+
+int main()
+{
+	int n;scanf("%d",&n);
+	while(n--){
+		node* root=NULL;//代表此棵树的root 
+		string s;
+		node* depth[105];
+		int parent=0;
+		while(cin>>s && s[0]!='0'){
+			int l=s.size()-1;
+			node* temp=new node(s[l]);
+			if(temp->c!='*') printf("%c",temp->c);//由于输入就是前序，所以可以直接输出 
+			if(l==0)//root
+			{
+				depth[0]=temp;
+				if(root==NULL) root=temp;
+			}
+			else if(l==parent+1){
+				depth[l]=temp;
+				if(temp->c=='*') depth[l-1]->lp=NULL;//no left child
+				else depth[l-1]->lp=temp;
+				parent=l;
+			}
+			else if(l<=parent){
+				depth[l-1]->rp=temp;
+				depth[l]=temp;
+				parent=l;
+			}
+		}
+		cout<<endl;
+		postorder(root);cout<<endl;
+		inorder(root);cout<<endl;
+		cout<<endl;
+	}
+ } 
