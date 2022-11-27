@@ -1,0 +1,40 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+struct node
+{
+	int x,y;
+	node(int _x=0, int _y=0):x(_x),y(_y){
+	}
+	bool operator < (const node & t) const//别忘了这两个const，写上就完事了
+	{ 
+		if(x==t.x){
+			return y<t.y;
+		}
+		return x<t.x;
+	}
+}p[1050];
+int main()
+{
+	ios::sync_with_stdio(0), cin.tie(0);
+	int n;
+	while(cin>>n && n){
+		for(int i=0;i<n;i++){
+			int x,y;
+			cin>>p[i].x>>p[i].y;	
+		}
+		sort(p, p+n);
+		int cnt=0;
+		for(int i=0;i<n;i++){
+			for(int j=i+1;j<n;j++){
+				int dx=p[i].x-p[j].x, dy=p[i].y-p[j].y;
+				node temp;
+				temp.x=p[i].x+dy, temp.y=p[i].y-dx;
+				if(binary_search(p, p+n, node(p[i].x+dy, p[i].y-dx)) 
+				&& binary_search(p, p+n, node(p[j].x+dy, p[j].y-dx)))
+					cnt++;
+			}
+		}
+		cout<<cnt/2<<endl;
+	}
+}
