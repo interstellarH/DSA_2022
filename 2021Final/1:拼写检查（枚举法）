@@ -1,0 +1,57 @@
+/*拼写检查 V1-暴力解法*/ 
+#include<iostream>
+using namespace std;
+string dict[10010];
+int main() 
+{
+	ios::sync_with_stdio(0), cin.tie(0);
+	string s;
+	int num=0;
+	while(cin>>s && s!="#"){
+		dict[num++]=s;
+	}
+	while(cin>>s && s!="#"){
+		int i;
+		for(i=0;i<num;i++){
+			if(dict[i]==s){
+				cout<<s<<" is correct";
+				break;
+			}	
+		}
+		if(i==num){
+			int len=s.size();
+			int j;
+			cout<<s<<":";//之后的三种情况输出都跟在这个后面即可 
+			for(j=0;j<num;j++){
+				if(dict[j].size()==len+1){//删除一个字母后 
+					int k=0,l=0,cnt=0;
+					while(k<=len+1 && cnt<=1) {//应该只用留一个即可 
+						if(dict[j][k]==s[l]) k++,l++;
+						else k++, cnt++;
+					}
+					if(k>len+1) 
+						cout<<" "<<dict[j]; 
+				}
+				else if(dict[j].size()==len-1){//添加了一个字母后 
+					int k=0,l=0,cnt=0;
+					while(l<=len && cnt<=1){
+						if(dict[j][k]==s[l]) k++,l++;
+						else l++, cnt++;
+					}
+					if(l>len)
+						cout<<" "<<dict[j];
+				}
+				else if(dict[j].size()==len){//替换了一个字母后 
+					int k=0,l=0,cnt=0;
+					while(l<=len && cnt<=1){
+						if(dict[j][k]!=s[l]) cnt++;
+						k++,l++;
+					}
+					if(l>len)
+						cout<<" "<<dict[j];
+				}
+			}
+		}
+		cout<<endl;	
+	}
+}
