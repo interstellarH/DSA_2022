@@ -1,0 +1,31 @@
+#include<iostream>
+#include<unordered_map>
+#include<set>
+//经历了3次内部容器的改动，第一次用的queue，由于第一次输出会把队列清空，重复查找出错
+//第二次用的vector但是对于单个文件重复出现字符串，结果也会重复输出（然而一个文档输出一次即可）
+//最后用set自动去重
+using namespace std;
+
+int main()
+{
+	int N; cin >> N;
+	unordered_map<string, set<int> > ump;
+	for (int i = 1; i <= N; i++) {
+		int ci; cin >> ci;
+		while (ci--) {
+			string s; cin >> s;
+			ump[s].insert(i);
+		}
+	}
+	int M; cin >> M;
+	while (M--) {
+		string s; cin >> s;
+		if (ump.count(s)) {
+			for (auto i : ump[s]) {
+				cout << i << ' ';
+			}
+			cout << endl;
+		}
+		else cout << "NOT FOUND" << endl;
+	}
+}
